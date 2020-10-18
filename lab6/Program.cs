@@ -1,3 +1,32 @@
+/*
+ 1) Для придуманной вами задачи (Пункт 1 из задания к л/р 2 + пункт 1 из задания к л/р 4) реализовать необходимые классы на языке C#;
+2) Продемонстрировать их использование в консольном С# приложении;
+3) Продемонстрировать сборку проекта и запуск приложения на платформе Mono под Linux, Mac OS и пр.;
+!) Использование GIT обязательно.
+Поля класса «машина»:
+•	Название
+•	Цена
+•	Цвет
+•	Скорость
+•	Количество бензина
+•	Двигатель (объект)
+Функции:
+•	Инициализация
+•	Установка параметров автомобиля
+•	Вывод данных машины
+•	Запуск двигателя
+•	Остановка двигателя
+•	Добавление скорости
+•	Уменьшить скорость
+Поля класса «двигатель»:
+•	Количество оборотов в минуту
+•	Мощность в Л.С.
+•	Объем в см куб.
+•	Количество цилиндров
+Функции:
+•	Инициализация
+•	Сеттеры и геттеры
+*/
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +40,34 @@ namespace lab6
     {
         static void Main(string[] args)
         {
-		 Console.WriteLine("Kek lol program is working");
-        }
+			//Console.WriteLine("Kek lol program is working");
+			Car bmw_x6 = new Car();
+			Engine bmw_engine = new Engine();
+			bmw_engine.init(0, 4395, 625, 8);
+			bmw_x6.init("BMW X6", 3500000, "BLACK", 0, 0, bmw_engine); //инициализируем поля объекта
+			bmw_x6.displayDataCar();
+			bmw_x6.readCarData();
+			bmw_x6.displayDataCar();
+			bmw_x6.startEngine(); //пытаемся завести двигатель
+			bmw_x6.displayDataCar();
+			bmw_x6.addBenzine(10); //добавляем бензин
+			bmw_x6.displayDataCar();
+			bmw_x6.startEngine(); //снова пытаемся завести двигатель
+			bmw_x6.displayDataCar();
+			for (int i = 0; i < 4; i++)
+			{
+				bmw_x6.addSpeed(i * 5); //добавляем скорость
+				bmw_x6.displayDataCar();
+			}
+			for (int i = 0; i < 4; i++)
+			{
+				bmw_x6.reduceSpeed(i * 5); //убавляем скорость
+				bmw_x6.displayDataCar();
+			}
+
+			bmw_x6.stopEngine(); //останавливаем двигатель
+			bmw_x6.displayDataCar();
+		}
     }
 	/////////////////////////////////////////////////
 	class Engine
@@ -89,35 +144,35 @@ namespace lab6
 			
 			Console.WriteLine("ENTER CAR DATA:");
 			//////////////////////////////////////////////////
-			Console.WriteLine("\tname:\t");
+			Console.Write("\tname:\t");
 			this.name = Console.ReadLine();
 			///////////////////////////////////////////////
 			bool flag = false; //флаг правильности ввода чисел
 			while (!flag) {
-				Console.WriteLine("\tprice:\t");
+				Console.Write("\tprice:\t");
 				str = Console.ReadLine();
 				flag = int.TryParse(str, out number);
 				if (!flag)
 				{
-					Console.WriteLine("re-enter:");
+					Console.Write("re-enter:");
 				}
 
 			}
 			this.price = number;
 			//////////////////////////////////////////////
 
-			Console.WriteLine("\tcolor:\t");
+			Console.Write("\tcolor:\t");
 			this.color = Console.ReadLine();
 			//////////////////////////////////////////////////
 			flag = false;
 			while (!flag)
 			{
-				Console.WriteLine("\tengineRPM:\t");
+				Console.Write("\tengineRPM:\t");
 				str = Console.ReadLine();
 				flag = int.TryParse(str, out number);
 				if (!flag)
 				{
-					Console.WriteLine("re-enter:");
+					Console.Write("re-enter:");
 				}
 
 			}
@@ -126,12 +181,12 @@ namespace lab6
 			flag = false;
 			while (!flag)
 			{
-				Console.WriteLine("\tcapacity:\t");
+				Console.Write("\tcapacity:\t");
 				str = Console.ReadLine();
 				flag = int.TryParse(str, out number);
 				if (!flag)
 				{
-					Console.WriteLine("re-enter:");
+					Console.Write("re-enter:");
 				}
 
 			}
@@ -140,12 +195,12 @@ namespace lab6
 			flag = false;
 			while (!flag)
 			{
-				Console.WriteLine("\tengine power:\t");
+				Console.Write("\tengine power:\t");
 				str = Console.ReadLine();
 				flag = int.TryParse(str, out number);
 				if (!flag)
 				{
-					Console.WriteLine("re-enter:");
+					Console.Write("re-enter:");
 				}
 
 			}
@@ -154,12 +209,12 @@ namespace lab6
 			flag = false;
 			while (!flag)
 			{
-				Console.WriteLine("\tquantity of cylinders:\t");
+				Console.Write("\tquantity of cylinders:\t");
 				str = Console.ReadLine();
 				flag = int.TryParse(str, out number);
 				if (!flag)
 				{
-					Console.WriteLine("re-enter:");
+					Console.Write("re-enter:");
 				}
 
 			}
@@ -168,12 +223,12 @@ namespace lab6
 			flag = false;
 			while (!flag)
 			{
-				Console.WriteLine("\tspeed:\t");
+				Console.Write("\tspeed:\t");
 				str = Console.ReadLine();
 				flag = int.TryParse(str, out number);
 				if (!flag)
 				{
-					Console.WriteLine("re-enter:");
+					Console.Write("re-enter:");
 				}
 
 			}
@@ -182,12 +237,12 @@ namespace lab6
 			flag = false;
 			while (!flag)
 			{
-				Console.WriteLine("\tbenzine:\t");
+				Console.Write("\tbenzine:\t");
 				str = Console.ReadLine();
 				flag = int.TryParse(str, out number);
 				if (!flag)
 				{
-					Console.WriteLine("re-enter:");
+					Console.Write("re-enter:");
 				}
 
 			}
