@@ -31,8 +31,13 @@ namespace lab7
 			car[1].displayDataCar();
 			car[1]++;
 			car[1].displayDataCar();
-			Console.WriteLine("\tВторой цвет: " + car[0].second_color);
-		
+			Console.WriteLine("\tВторой цвет: " + car[0].secondColor);
+			String str = "";
+			car[1].getStr(out str);
+			Console.WriteLine("out str="+str);
+			car[1].changeStr(ref str);
+			Console.WriteLine("ref str=" + str);
+
 			Console.ReadKey();
 		}
 	}
@@ -95,13 +100,26 @@ namespace lab7
 		private int benzine;
 		private Engine engine;
 
-		public String second_color { private set; get; }
+		/*
+		 Ref параметры предназначены для данных, которые могут быть изменены, 
+		out параметры предназначены для данных, которые являются дополнительным выходом для функции 
+		(например, int.TryParse), которые уже используют возвращаемое значение для чего-то.
+		 */
+		public void getStr(out String str)
+        {
+			str = "Машина " + name + ", цвет " + color + ", цена " + price;
+        }
+		public void changeStr(ref String str)
+        {
+			str = str + "!!!";
+        }
+		public String secondColor { private set; get; }
 		public void init(String name, int price, String color, int speed, int benzine, Engine engine)
 		{
 			this.name = name;
 			this.price = price;
 			this.color = color;
-			this.second_color = color;
+			this.secondColor = color;
 			this.speed = speed;
 			this.benzine = benzine;
 			this.engine = engine;
@@ -290,7 +308,7 @@ namespace lab7
 				Console.WriteLine("Car is parking. Car didn't speed down!");
 			}
 		}
-		public static Car operator +(Car car, int benzine) // Record+Record
+		public static Car operator +(Car car, int benzine) //
 		{
 			car.benzine += benzine;
 			return car;
@@ -300,7 +318,6 @@ namespace lab7
 			++car.benzine;
 			return car;
 		}
-
 
 	}
 	/////////////////////////////////////////////////
