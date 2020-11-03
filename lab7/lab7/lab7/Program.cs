@@ -27,7 +27,10 @@ namespace lab7
 			car[1] = audi;
 			car[0].displayDataCar();
 			car[1].displayDataCar();
-	
+			car[1] = car[1] + 50;
+			car[1].displayDataCar();
+			car[1]++;
+			car[1].displayDataCar();
 			Console.WriteLine("\tВторой цвет: " + car[0].second_color);
 		
 			Console.ReadKey();
@@ -287,6 +290,18 @@ namespace lab7
 				Console.WriteLine("Car is parking. Car didn't speed down!");
 			}
 		}
+		public static Car operator +(Car car, int benzine) // Record+Record
+		{
+			car.benzine += benzine;
+			return car;
+		}
+		public static Car operator ++(Car car) // ++ один префикс и постфикс!
+		{
+			++car.benzine;
+			return car;
+		}
+
+
 	}
 	/////////////////////////////////////////////////
 }
