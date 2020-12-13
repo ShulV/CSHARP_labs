@@ -39,7 +39,12 @@ namespace lab7
 			while (choice != 0)
 			{
 				flag_in = false;
-				Console.WriteLine("\n\nВведите 1 - ПОКАЗАТЬ 7 ЛАБУ\nВведите 2 - ПОКАЗАТЬ 8 ЛАБУ\nВведите 3 - ПОКАЗАТЬ 9 ЛАБУ\nВведите 0 - ВЫХОД\nваш выбор: ");
+				Console.WriteLine(
+					"\n\nВведите 1 - ПОКАЗАТЬ 7 ЛАБУ\n" +
+					"Введите 2 - ПОКАЗАТЬ 8 ЛАБУ\n" +
+					"Введите 3 - ПОКАЗАТЬ 9 ЛАБУ\n" +
+					"Введите 4 - ПОКАЗАТЬ 10 ЛАБУ\n" +
+					"Введите 0 - ВЫХОД\nваш выбор: ");
 				while (!flag_in)
 				{
 					str_in = Console.ReadLine();
@@ -121,6 +126,27 @@ namespace lab7
                     }
 
 				}
+				if (choice == 4)
+                {
+					Engine engine1 = new Engine(0, 4395, 625, 8);
+					Car bmw_x6 = new Car("BMW X6", 3500000, "BLACK", 0, 10, 300, engine1); //много парам
+					try
+					{
+						bmw_x6.startEngine();
+						for (int i = 0; i < 10; i++)
+						{
+							bmw_x6.addSpeed(40);
+						}
+
+					}
+					catch (NegativeNumberException ex) {
+						Console.Write("Поймали исключение NegativeNumberException : слишком большая скорость!\n\tex.Message = " + ex.Message + "\n");
+					}
+					catch (Exception ex) {
+						Console.Write("Поймали исключение Exception : слишком большая скорость!\n\tex.Message = " + ex.Message + "\n");
+					}
+					
+				}
 			}
 			
 			
@@ -128,6 +154,21 @@ namespace lab7
 			
 		}
 	}
+	/////////////////////////////////////////////////
+	class NegativeNumberException : Exception
+		{
+		//Код ошибки
+		private int errorCode;
+		//Принимает сообщение с описание ошибки, и код ошибки
+		public NegativeNumberException(string aMessage, int aCode)
+		: base(aMessage) //Вызываем конструктор базового класса
+		{
+			errorCode = aCode;
+		}
+		//Возвращает код ошибки
+		public int ErrorCode { get { return errorCode; } }
+		
+	};
 	/////////////////////////////////////////////////
 	class Engine
 	{
@@ -202,6 +243,7 @@ namespace lab7
 		private int speed;
 		public int benzine;
 		private Engine engine;
+		private int max_speed;
 		static int count=0;// определение статической переменной-члена класса
 
 
@@ -213,6 +255,7 @@ namespace lab7
 			this.speed = 0;
 			this.benzine = 0;
 			this.engine = null;
+			this.max_speed = 0;
 			count++;
 			Console.WriteLine("Car created 0 param!");
 		}
@@ -227,11 +270,26 @@ namespace lab7
 			this.speed = 0;
 			this.benzine = 0;
 			this.engine = null;
+			this.max_speed = 0;
 			count++;
 			Console.WriteLine("Car created 1 param!");
 		}
 
 		//конструктор со всеми параметрами
+		public Car(String name, int price, String color, int speed, int benzine, int max_speed, Engine engine)
+		{
+			this.name = name;
+			this.price = price;
+			this.color = color;
+			this.secondColor = color;
+			this.speed = speed;
+			this.benzine = benzine;
+			this.engine = engine;
+			this.max_speed = max_speed;
+			count++;
+			Console.WriteLine("Car created all param!");
+		}
+		//конструктор с почти всеми параметрами
 		public Car(String name, int price, String color, int speed, int benzine, Engine engine)
 		{
 			this.name = name;
@@ -241,8 +299,9 @@ namespace lab7
 			this.speed = speed;
 			this.benzine = benzine;
 			this.engine = engine;
+			this.max_speed = 0;
 			count++;
-			Console.WriteLine("Car created all param!");
+			Console.WriteLine("Car created almost all param!");
 		}
 		public static int getCount()
         {
@@ -431,6 +490,7 @@ namespace lab7
 		{
 			if (this.engine.getEngineRPM() > 0)
 			{
+				if (this.speed + speed > this.max_speed) { throw new NegativeNumberException("Брошено исключение: Слишком большая скорость!\n", 1); }
 				this.speed += speed;
 				Console.WriteLine("Car speeded up!");
 			}
