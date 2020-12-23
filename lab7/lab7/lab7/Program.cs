@@ -44,6 +44,7 @@ namespace lab7
 					"Введите 2 - ПОКАЗАТЬ 8 ЛАБУ\n" +
 					"Введите 3 - ПОКАЗАТЬ 9 ЛАБУ\n" +
 					"Введите 4 - ПОКАЗАТЬ 10 ЛАБУ\n" +
+					"Введите 5 - ПОКАЗАТЬ 11 ЛАБУ\n" +
 					"Введите 0 - ВЫХОД\nваш выбор: ");
 				while (!flag_in)
 				{
@@ -146,6 +147,48 @@ namespace lab7
 						Console.Write("Поймали исключение Exception : слишком большая скорость!\n\tex.Message = " + ex.Message + "\n");
 					}
 					
+				}
+				if (choice == 5)
+                {
+					const int N = 4, M = 3;
+					Car[] car_array = new Car[5];
+					for (int i = 0; i < N; i++)
+					{
+						car_array[i] = new Car("car" + i.ToString());
+					}
+					/////////////////////////////////////////////////////////////////
+					Car[,] car_darray = new Car[N,M];//двумерный (прямоугольный) массив
+					for (int i = 0; i < N; i++)
+					{
+						for (int j = 0; j < M; j++)
+						{
+							car_darray[i,j] = new Car("car" +(i * M + j).ToString());
+						}
+
+					}
+					////////////////////////////////////////////////////////////////////
+					Car[][] d_car_array = new Car[N][];//зубчатый массив
+					for (int i = 0; i < N; i++)
+					{
+						d_car_array[i] = new Car[i];
+						for (int j = 0; j < i; j++) //матрица не прямоугольная
+						{
+							d_car_array[i][j] = new Car("car" + i.ToString());
+						}
+
+					}
+					
+					 for (int i = 0; i < N; i++)
+					{
+						for (int j = 0; j < d_car_array[i].Length; j++)
+						{
+							d_car_array[i][j] = new Car("car" + i.ToString());
+							Console.Write("Car[" + i + "][" + j + ']' + ' ');
+						}
+						Console.Write('\n');
+					}
+					 
+					//////////////////////////////////////////////////////////
 				}
 			}
 			
@@ -257,7 +300,7 @@ namespace lab7
 			this.engine = null;
 			this.max_speed = 0;
 			count++;
-			Console.WriteLine("Car created 0 param!");
+			//Console.WriteLine("Car created 0 param!");
 		}
 
 		//конструктор с одним параметром
@@ -272,7 +315,7 @@ namespace lab7
 			this.engine = null;
 			this.max_speed = 0;
 			count++;
-			Console.WriteLine("Car created 1 param!");
+			//Console.WriteLine("Car created 1 param!");
 		}
 
 		//конструктор со всеми параметрами
@@ -287,7 +330,7 @@ namespace lab7
 			this.engine = engine;
 			this.max_speed = max_speed;
 			count++;
-			Console.WriteLine("Car created all param!");
+			//Console.WriteLine("Car created all param!");
 		}
 		//конструктор с почти всеми параметрами
 		public Car(String name, int price, String color, int speed, int benzine, Engine engine)
@@ -301,7 +344,7 @@ namespace lab7
 			this.engine = engine;
 			this.max_speed = 0;
 			count++;
-			Console.WriteLine("Car created almost all param!");
+			//Console.WriteLine("Car created almost all param!");
 		}
 		public static int getCount()
         {
