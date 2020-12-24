@@ -196,7 +196,10 @@ namespace lab7
 					TaxiCar taxi_car = new TaxiCar("reno_logan");
 					taxi_car.displayDataCar();
 					taxi_car.callTaxi("Проспект Ленина 119");
-                }
+					TaxiCar taxi_car2 = new TaxiCar("Solaris", 777);
+					taxi_car2.addBenzine(10, 2);
+					taxi_car2.displayDataCar();
+				}
 			}
 			
 			
@@ -575,8 +578,22 @@ namespace lab7
 
 	//производный класс
 	class TaxiCar : Car {
+		private int code_name;
 		//вызов конструктора базового класса
 		public TaxiCar(String name):base(name) { }
+		//перегрузка метода базового класса (с вызовом базового класса)
+		public TaxiCar(String name, int code_name):base(name)
+		{
+			this.code_name = code_name;
+		}
+
+		//перегрузка метода базового класса (без вызова базового класса)
+		public int addBenzine(int liters, int work_bonus)
+		{
+			Console.WriteLine(liters + work_bonus + "lit. benzine added!");
+			this.benzine += liters + work_bonus;
+			return this.benzine;
+		}
 		public void callTaxi(String address)
 		{
 			Console.WriteLine("По адресу {0} приехала машина {1}", address, this.name);
