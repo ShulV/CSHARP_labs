@@ -194,6 +194,8 @@ namespace lab7
 				if (choice == 6)
                 {
 					TaxiCar taxi_car = new TaxiCar("reno_logan");
+					taxi_car.displayDataCar();
+					taxi_car.callTaxi("Проспект Ленина 119");
                 }
 			}
 			
@@ -285,7 +287,7 @@ namespace lab7
 	/////////////////////////////////////////////////
 	class Car
 	{
-		private String name;
+		protected String name;
 		private int price;
 		private String color;
 		private int speed;
@@ -573,7 +575,12 @@ namespace lab7
 
 	//производный класс
 	class TaxiCar : Car {
+		//вызов конструктора базового класса
 		public TaxiCar(String name):base(name) { }
+		public void callTaxi(String address)
+		{
+			Console.WriteLine("По адресу {0} приехала машина {1}", address, this.name);
+		}
 	};
 	/////////////////////////////////////////////////
 	
