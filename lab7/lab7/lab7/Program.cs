@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace lab7
 {
-	// lab work №7,8,9 Shulpov Victor PI-92
+	// lab works Shulpov Victor PI-92
 	/*
 	Реализовать работу автомобиля на примере динамической структуры.
 	Поля структуры:
@@ -179,7 +179,7 @@ namespace lab7
 
 					}
 					
-					 for (int i = 0; i < N; i++)
+					for (int i = 0; i < N; i++)
 					{
 						for (int j = 0; j < d_car_array[i].Length; j++)
 						{
@@ -188,7 +188,7 @@ namespace lab7
 						}
 						Console.Write('\n');
 					}
-					 
+
 					//////////////////////////////////////////////////////////
 				}
 				if (choice == 6)
@@ -199,6 +199,9 @@ namespace lab7
 					TaxiCar taxi_car2 = new TaxiCar("Solaris", 777);
 					taxi_car2.addBenzine(10, 2);
 					taxi_car2.displayDataCar();
+					Console.WriteLine("x=" + taxi_car2.x + " y=" + taxi_car2.y);
+					taxi_car2.Move(500, 400, 0);//вызов метода абстрактного класса из его наследника
+					Console.WriteLine("x=" + taxi_car2.x + " y=" + taxi_car2.y);
 				}
 			}
 			
@@ -288,7 +291,18 @@ namespace lab7
 
 	}
 	/////////////////////////////////////////////////
-	class Car
+	//абстрактный класс
+	abstract class Vehicle
+	{
+		public int x;
+		public int y;
+		public System.Drawing.Point getPosition()
+		{
+			return new System.Drawing.Point(this.x, this.y);
+		}
+       abstract public void Move(int x, int y, int z);//абстрактный метод, который определяется в наследнике
+};
+	class Car : Vehicle
 	{
 		protected String name;
 		private int price;
@@ -564,7 +578,14 @@ namespace lab7
 				Console.WriteLine("Car is parking. Car didn't speed down!");
 			}
 		}
-		public static Car operator +(Car car, int benzine) //
+		//переопределенная функция
+        public override void Move(int x, int y, int z)
+        {
+			this.x += x;
+			this.y += y;
+        }
+
+        public static Car operator +(Car car, int benzine) //
 		{
 			car.benzine += benzine;
 			return car;
