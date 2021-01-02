@@ -202,6 +202,46 @@ namespace lab7
 					Console.WriteLine("x=" + taxi_car2.x + " y=" + taxi_car2.y);
 					taxi_car2.Move(500, 400, 0);//вызов метода абстрактного класса из его наследника
 					Console.WriteLine("x=" + taxi_car2.x + " y=" + taxi_car2.y);
+					//интерфейс
+					Console.WriteLine("\nИНТЕРФЕЙС\n");
+					taxi_car2.Beep();
+					IBeep i_taxi_vaz = new TaxiCar("ВАЗ");
+					i_taxi_vaz.Beep();
+					IBeep i_car_vaz = new Car("ВАЗ");
+					i_car_vaz.Beep();
+					Car car = new Car("car");
+					car.Beep();
+					//мелкое клонирование
+					Console.WriteLine("\nКЛОНИРОВАНИЕ\n");
+					Engine engine1 = new Engine(0, 4395, 625, 8);
+					Car car1 = new Car("BMW X6", 3500000, "BLACK", 0, 0, engine1);
+					Engine engine2 = new Engine(0, 3395, 425, 4);
+					Car car2 = new Car("BMW X3", 1500000, "RED", 0, 0, engine2);
+					Console.WriteLine("произвели мелкое клонирование");
+					car2 = (Car)car1.Clone();
+					car2.displayDataCar();
+					Console.WriteLine("Данные двигателя car2");
+					car2.engine.DisplayEngineData();
+					Console.WriteLine("Установили для двигателя car1 EnginePower");
+					car1.engine.setEnginePower(100000000);
+					Console.WriteLine("Данные двигателя car2 (при мелком клонировании не создали новый объект, который был полем класса)");
+					car2.engine.DisplayEngineData();
+					//глубокое клонирование
+					Engine _engine1 = new Engine(0, 4444, 444, 4);
+					TaxiCar _taxi_car1 = new TaxiCar("taxi 4", 4444444, "color 4", 0, 0, 444, _engine1);
+					Engine _engine2 = new Engine(0, 2222, 222, 2);
+					TaxiCar _taxi_car2 = new TaxiCar("taxi 2", 1500000, "color 2", 0, 0, 222, _engine2);
+					Console.WriteLine("произвели глубокое клонирование");
+					_taxi_car2 = (TaxiCar)_taxi_car1.Clone();
+					_taxi_car2.displayDataCar();
+					Console.WriteLine("Данные двигателя _taxi_car2");
+					_taxi_car2.engine.DisplayEngineData();
+					Console.WriteLine("Установили для двигателя _taxi_car2 EnginePower");
+					_taxi_car1.engine.setEnginePower(100000000);
+					Console.WriteLine("Данные двигателя _taxi_car2 (при глубоком клонировании создали новый объект, который был полем класса)");
+					_taxi_car2.engine.DisplayEngineData();
+					Console.WriteLine("Данные двигателя _taxi_car1");
+					_taxi_car1.engine.DisplayEngineData();
 				}
 			}
 			
@@ -289,6 +329,14 @@ namespace lab7
 			return this.quantityOfCylinders;
 		}
 
+		public void DisplayEngineData()
+        {
+			Console.WriteLine("\t\tEngineRPM:\t" + getEngineRPM());
+			Console.WriteLine("\t\tCapacity:\t" + getCapacity());
+			Console.WriteLine("\t\tEngine Power:\t" + getEnginePower());
+			Console.WriteLine("\t\tQuanity of cylinders:\t" + getQuantityOfCylinders());
+		}
+
 	}
 	/////////////////////////////////////////////////
 	//абстрактный класс
@@ -302,15 +350,15 @@ namespace lab7
 		}
        abstract public void Move(int x, int y, int z);//абстрактный метод, который определяется в наследнике
 };
-	class Car : Vehicle
+	class Car : Vehicle, IBeep, ICloneable  // интерфейс клонирования
 	{
 		protected String name;
-		private int price;
-		private String color;
-		private int speed;
+		protected int price;
+		protected String color;
+		protected int speed;
 		public int benzine;
-		private Engine engine;
-		private int max_speed;
+		public Engine engine;
+		protected int max_speed;
 		static int count=0;// определение статической переменной-члена класса
 
 
@@ -379,6 +427,10 @@ namespace lab7
 			count--;
 		}
 
+		public void Beep()
+		{
+			Console.WriteLine("Default beep! (Car)");
+		}
 		/*
 		 Ref параметры предназначены для данных, которые могут быть изменены, 
 		out параметры предназначены для данных, которые являются дополнительным выходом для функции 
@@ -585,6 +637,13 @@ namespace lab7
 			this.y += y;
         }
 
+        public object Clone()
+        {
+            return new Car(name,price, color, speed, benzine, max_speed, engine);//перегрузка клонирования
+        }
+
+
+
         public static Car operator +(Car car, int benzine) //
 		{
 			car.benzine += benzine;
@@ -596,6 +655,14 @@ namespace lab7
 		}
 
 	}
+	//интерфейс гудка (подачи звукового сигнала)
+	interface IBeep
+    {
+		public void Beep()
+        {
+			Console.WriteLine("Default beep!");
+        }
+    }
 
 	//производный класс
 	class TaxiCar : Car {
@@ -608,6 +675,7 @@ namespace lab7
 			this.code_name = code_name;
 		}
 
+		public TaxiCar(String name, int price, String color, int speed, int benzine, int max_speed, Engine engine) : base(name, price, color, speed, benzine, max_speed, engine) { }
 		//перегрузка метода базового класса (без вызова базового класса)
 		public int addBenzine(int liters, int work_bonus)
 		{
@@ -618,6 +686,17 @@ namespace lab7
 		public void callTaxi(String address)
 		{
 			Console.WriteLine("По адресу {0} приехала машина {1}", address, this.name);
+		}
+		public new void Beep()
+		{
+			Console.WriteLine("Default beep! (Taxi)");
+		}
+		//глубокое клонирование
+		public new object Clone()
+		{
+			Engine new_engine = new Engine(engine.getEngineRPM(), engine.getCapacity(), engine.getEnginePower(), engine.getQuantityOfCylinders());
+			TaxiCar new_taxi_car =  new TaxiCar(name, price, color, speed, benzine, max_speed, new_engine);//перегрузка клонирования
+			return new_taxi_car;
 		}
 	};
 	/////////////////////////////////////////////////
